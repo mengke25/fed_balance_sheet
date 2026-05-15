@@ -546,8 +546,11 @@ def format_large_number(num):
 
 
 # 加载图片
-logo_path = r'D:\py_proj\macro_dashboard\appendix\logo-bgremover.png'
-qrcode_path = r'D:\py_proj\macro_dashboard\appendix\qrcode_for_gh_e27313512349_430.jpg'
+# logo_path = r'D:\py_proj\macro_dashboard\appendix\logo-bgremover.png'
+# qrcode_path = r'D:\py_proj\macro_dashboard\appendix\qrcode_for_gh_e27313512349_430.jpg'
+https://mengke25.github.io/guosen/global_market/convert/logo-bgremover.png
+https://mengke25.github.io/guosen/global_market/convert/qrcode_for_gh_e27313512349_430.jpg
+
 
 try:
     logo_base64 = img_to_base64(logo_path)
