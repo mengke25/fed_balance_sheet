@@ -10,6 +10,8 @@ from openpyxl import load_workbook
 import numpy as np
 from datetime import datetime
 import base64
+import requests
+from io import BytesIO
 
 # 页面配置
 st.set_page_config(
@@ -258,18 +260,32 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-def img_to_base64(path):
-    """将图片转换为base64编码"""
-    with open(path, "rb") as f:
-        data = f.read()
+def img_to_base64(path_or_url):
+    """将图片转换为base64编码，支持本地路径或URL"""
+    if path_or_url.startswith('http'):
+        # 从URL加载
+        response = requests.get(path_or_url, timeout=10)
+        response.raise_for_status()
+        data = response.content
+    else:
+        # 从本地文件加载
+        with open(path_or_url, "rb") as f:
+            data = f.read()
     return base64.b64encode(data).decode()
 
 
 @st.cache_data
 def load_data():
-    """加载Excel数据"""
-    # wb = load_workbook(r'd:\py_proj\macro_dashboard\【国信宏观】美联储资产负债（自动更新）.xlsx', data_only=True)
-    wb = load_workbook(r'https://mengke25.github.io/guosen/global_market/convert/【国信宏观】美联储资产负债（自动更新）.xlsx', data_only=True)
+    """加载Excel数据，支持本地路径或URL"""
+    # 数据文件URL（可替换为本地路径）
+    data_url = 'https://mengke25.github.io/guosen/global_market/convert/【国信宏观】美联储资产负债（自动更新）.xlsx'
+
+    # 从URL下载Excel文件
+    response = requests.get(data_url, timeout=30)
+    response.raise_for_status()
+
+    # 使用BytesIO作为文件对象
+    wb = load_workbook(BytesIO(response.content), data_only=True)
 
     # 读取资产数据
     ws_asset = wb['资产']
@@ -546,12 +562,9 @@ def format_large_number(num):
         return f"{num:,.0f}"
 
 
-# 加载图片
-# logo_path = r'D:\py_proj\macro_dashboard\appendix\logo-bgremover.png'
-# qrcode_path = r'D:\py_proj\macro_dashboard\appendix\qrcode_for_gh_e27313512349_430.jpg'
-logo_path = r'https://mengke25.github.io/guosen/global_market/convert/logo-bgremover.png'
-qrcode_path = r'https://mengke25.github.io/guosen/global_market/convert/qrcode_for_gh_e27313512349_430.jpg'
-
+# 加载图片（使用URL，方便云端部署）
+logo_path = 'https://mengke25.github.io/guosen/global_market/convert/logo-bgremover.png'
+qrcode_path = 'https://mengke25.github.io/guosen/global_market/convert/qrcode_for_gh_e27313512349_430.jpg'
 
 try:
     logo_base64 = img_to_base64(logo_path)
