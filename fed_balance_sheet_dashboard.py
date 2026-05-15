@@ -268,7 +268,8 @@ def img_to_base64(path):
 @st.cache_data
 def load_data():
     """加载Excel数据"""
-    wb = load_workbook(r'd:\py_proj\macro_dashboard\【国信宏观】美联储资产负债（自动更新）.xlsx', data_only=True)
+    # wb = load_workbook(r'd:\py_proj\macro_dashboard\【国信宏观】美联储资产负债（自动更新）.xlsx', data_only=True)
+    wb = load_workbook(r'https://mengke25.github.io/guosen/global_market/convert/【国信宏观】美联储资产负债（自动更新）.xlsx', data_only=True)
 
     # 读取资产数据
     ws_asset = wb['资产']
